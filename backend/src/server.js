@@ -1,18 +1,21 @@
 import express from "express";
 import dotenv from "dotenv";
 import path from "path";
-import url from "url";
 
 dotenv.config();
 
+const PORT = process.env.PORT || 5000;
+
 const app = express();
 
-app.use(express.static(path.join(path.resolve(), "../../frontend/dist")));
+const __dirname = path.resolve();
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(path.resolve(), "../../frontend/dist/index.html"));
+app.use(express.static(path.join(__dirname, "../frontend", "dist")));
+
+app.get("/", (_, res) => {
+  res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
 });
 
-app.listen(process.env.PORT || 5000, () => {
-  console.log(`Server is running on port ${process.env.PORT || 5000}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
