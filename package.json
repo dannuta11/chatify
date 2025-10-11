@@ -1,0 +1,23 @@
+{
+  "name": "chatify-app",
+  "version": "1.0.0",
+  "description": "Hello Word",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm install --prefix frontend && npm install --prefix backend",
+    "start": "npm run start --prefix backend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dannuta11/chatify.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dannuta11/chatify/issues"
+  },
+  "homepage": "https://github.com/dannuta11/chatify#readme"
+}
