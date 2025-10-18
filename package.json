@@ -2,7 +2,6 @@
   "name": "chatify-app",
   "version": "1.0.0",
   "description": "Hello Word",
-  "main": "index.js",
   "type": "module",
   "scripts": {
     "build": "npm install --prefix frontend && npm install --prefix backend",
