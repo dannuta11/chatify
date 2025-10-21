@@ -2,14 +2,17 @@ import express from "express";
 import dotenv from "dotenv";
 import path from "path";
 
+import { expressApp } from "./config";
+import { PORT } from "./constants";
+
 dotenv.config();
 
-const PORT = process.env.PORT || 3000;
+expressApp.use(express.static(path.join(__dirname, "../frontend", "dist")));
 
-const app = express();
+expressApp.get("/", (_, res) => {
+  res.json({ message: "Welcome to Chatify API" });
+});
 
-app.use(express.static(path.join(__dirname, "../frontend", "dist")));
-
-app.listen(PORT, () => {
+expressApp.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
