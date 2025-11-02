@@ -1,11 +1,10 @@
 import type { Request, Response } from "express";
 
 import { UsersCreateInput } from "../generated/prisma/models/Users";
-import { hashPassword } from "../helpers";
 import { UserService } from "../services";
 
 export const createUser = async (
-  req: Request<any, any, UsersCreateInput>,
+  req: Request<unknown, unknown, UsersCreateInput>,
   res: Response
 ) => {
   const { email, password, username } = req.body;
