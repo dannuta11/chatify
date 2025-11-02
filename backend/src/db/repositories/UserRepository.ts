@@ -1,13 +1,15 @@
+import { UsersCreateInput } from "../../generated/prisma/models/Users";
 import prismaClient from "../schema/client";
-import { UserPayload } from "../../types";
 
 export class UserRepository {
-  static async createUser(userPayload: UserPayload) {
+  static async createUser(userPayload: UsersCreateInput) {
+    const { email, username, password } = userPayload;
+
     const user = await prismaClient.users.create({
       data: {
-        name: userPayload.name,
-        email: userPayload.email,
-        password: userPayload.password,
+        username,
+        email,
+        password,
       },
     });
 

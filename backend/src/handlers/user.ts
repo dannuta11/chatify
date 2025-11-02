@@ -1,17 +1,19 @@
 import type { Request, Response } from "express";
 
+import { UsersCreateInput } from "../generated/prisma/models/Users";
 import { hashPassword } from "../helpers";
 import { UserService } from "../services";
 
-export const createUser = async (req: Request, res: Response) => {
-  const { name, email, password } = req.body;
-
-  const hashedPassword = await hashPassword(password);
+export const createUser = async (
+  req: Request<any, any, UsersCreateInput>,
+  res: Response
+) => {
+  const { email, password, username } = req.body;
 
   const user = await UserService.createUser({
-    name,
     email,
-    password: hashedPassword,
+    password,
+    username,
   });
 
   res.status(201).json(user);
