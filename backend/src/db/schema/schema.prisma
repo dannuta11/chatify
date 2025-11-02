@@ -8,28 +8,6 @@ datasource db {
     url      = env("PRISMA_DATABASE_URL_TEST")
 }
 
-model Categories {
-    id         Int        @id @default(autoincrement())
-    name       String     @unique @db.VarChar(60)
-    created_at DateTime   @default(now())
-    updated_at DateTime
-    Products   Products[]
-}
-
-model Products {
-    id          Int        @id @default(autoincrement())
-    name        String     @db.VarChar(100)
-    description String?
-    price       Decimal    @db.Decimal(10, 2)
-    currency    String     @default("USD") @db.VarChar(3)
-    quantity    Int        @default(0)
-    active      Boolean    @default(true)
-    created_at  DateTime   @default(now())
-    updated_at  DateTime
-    category_id Int
-    Categories  Categories @relation(fields: [category_id], references: [id])
-}
-
 model Users {
     id         Int      @id @default(autoincrement())
     username   String   @unique @db.VarChar(30)
