@@ -10,15 +10,15 @@ export class UserService {
       throw new Error("Missing required fields");
     }
 
-    if (username === undefined || username.trim() === "") {
+    if (username.trim() === "") {
       throw new Error("Invalid name");
     }
 
-    if (email === undefined || email.trim() === "") {
+    if (email.trim() === "") {
       throw new Error("Invalid email");
     }
 
-    if (password === undefined || password.trim() === "") {
+    if (password.trim() === "") {
       throw new Error("Invalid password");
     }
 
