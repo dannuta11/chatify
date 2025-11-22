@@ -1,23 +1,23 @@
 import express from "express";
-import dotenv from "dotenv";
 import path from "path";
 
-import { expressApp } from "./config";
 import { PORT } from "./constants";
-import { createUser } from "./handlers";
+import auth from "./api/auth";
 
-dotenv.config();
+const app = express();
 
-expressApp.use(express.json());
+// Middleware
+app.use(express.json());
+app.use(express.static(path.join(__dirname, "../frontend", "dist")));
 
-expressApp.use(express.static(path.join(__dirname, "../frontend", "dist")));
+// API routes
+app.use("/api/auth", auth);
 
-expressApp.get("/", (_, res) => {
-  res.json({ message: "Welcome to Chatify API" });
+// Test route to see if express is working
+app.get("/test", (req, res) => {
+  res.status(200).json({ status: "Express is working!!!" });
 });
 
-expressApp.post("/user", createUser);
-
-expressApp.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
