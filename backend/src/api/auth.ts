@@ -40,14 +40,12 @@ router.post(
       const user = await createUser(userPayload);
       res.status(201).json({ user });
     } catch (error) {
-      res.status(500).json({
-        error: "Registration failed",
-      });
+      res.status(500).json({ error: "Registration failed" });
     }
   }
 );
 
-router.get("/users", async (_req, res) => {
+router.get("/users", async (_, res) => {
   try {
     const users = await getUserList();
     res.status(200).json({ users });
