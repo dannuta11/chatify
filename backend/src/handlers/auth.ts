@@ -8,8 +8,8 @@ export const createUser = async (
   const { username, email, password } = payload;
   const hashedPassword = await hashPassword(password);
   const userPayload: UsersCreateInput = {
-    username: username.trim(),
-    email: email.trim(),
+    username: username,
+    email: email,
     password: hashedPassword,
   };
 
