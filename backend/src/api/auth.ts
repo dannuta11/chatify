@@ -47,7 +47,7 @@ router.post(
     } catch (error) {
       res.status(500).json({ error: "Registration failed" });
     }
-  }
+  },
 );
 
 router.get("/users", async (_, res: Response) => {
@@ -77,9 +77,9 @@ router.post(
         return;
       }
 
-      const isPasswordValid = await comparePassword(password, user.password);
+      const isMatchingPassword = await comparePassword(password, user.password);
 
-      if (!isPasswordValid) {
+      if (!isMatchingPassword) {
         res.status(401).json({ error: "Invalid credentials" });
         return;
       }
@@ -88,7 +88,7 @@ router.post(
     } catch (error) {
       res.status(500).json({ error: "Login failed" });
     }
-  }
+  },
 );
 
 export default router;

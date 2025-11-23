@@ -2,18 +2,18 @@ import { UsersCreateInput } from "../generated/prisma/models/Users";
 import { createUser as initializeUser } from "../db/repositories";
 import { hashPassword } from "../helpers";
 
-export const createUser = async (
-  payload: UsersCreateInput
-): Promise<UsersCreateInput> => {
-  const { username, email, password } = payload;
+export const createUser = async ({
+  username,
+  email,
+  password,
+}: UsersCreateInput): Promise<UsersCreateInput> => {
   const hashedPassword = await hashPassword(password);
-  const userPayload: UsersCreateInput = {
-    username: username,
-    email: email,
-    password: hashedPassword,
-  };
 
-  const user = await initializeUser(userPayload);
+  const user = await initializeUser({
+    username,
+    email,
+    password: hashedPassword,
+  });
 
   return user;
 };

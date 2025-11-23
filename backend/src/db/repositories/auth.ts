@@ -2,7 +2,7 @@ import { UsersCreateInput } from "../../generated/prisma/models/Users";
 import prismaClient from "../schema/client";
 
 export const createUser = async (
-  payload: UsersCreateInput
+  payload: UsersCreateInput,
 ): Promise<UsersCreateInput> => {
   const user = await prismaClient.users.create({
     data: payload,
@@ -17,7 +17,7 @@ export const getUserList = async (): Promise<UsersCreateInput[]> => {
 };
 
 export const findUserByEmail = async (
-  email: string
+  email: string,
 ): Promise<UsersCreateInput | null> => {
   const user = await prismaClient.users.findUnique({
     where: { email },
