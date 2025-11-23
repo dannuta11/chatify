@@ -1,7 +1,12 @@
 import { Request, Response, Router } from "express";
 import { UsersCreateInput } from "../generated/prisma/models";
 import { createUser } from "../handlers";
-import { getUserList, findUserByEmail } from "../db/repositories";
+import {
+  getUserList,
+  findUserByEmail,
+  deleteUserById,
+  findUserById,
+} from "../db/repositories";
 import { comparePassword } from "../helpers";
 
 // Types
@@ -79,14 +84,48 @@ router.post(
 
       const isMatchingPassword = await comparePassword(password, user.password);
 
-      if (!isMatchingPassword) {
+      if (isMatchingPassword === false) {
         res.status(401).json({ error: "Invalid credentials" });
         return;
       }
 
-      res.status(200).json({ message: "Login successful" });
+      res.status(200).json({ message: "Login successful", user });
     } catch (error) {
       res.status(500).json({ error: "Login failed" });
+    }
+  },
+);
+
+router.delete(
+  "/user/:id",
+  async (req: Request<{ id: string }>, res: Response) => {
+    try {
+      const userId = Number(req.params.id);
+
+      if (!userId) {
+        res.status(400).json({ error: "User ID is required" });
+        return;
+      }
+
+      const user = await findUserById(userId);
+      if (user === null) {
+        res
+          .status(404)
+          .json({
+            status: "Fail",
+            message: `User with id ${userId} not found`,
+          });
+        return;
+      }
+
+      await deleteUserById(userId);
+      res
+        .status(200)
+        .json({ status: "Success", message: "User deleted successfully" });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ error: "Failed to delete user", prismaError: error });
     }
   },
 );

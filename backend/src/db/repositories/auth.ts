@@ -25,3 +25,19 @@ export const findUserByEmail = async (
 
   return user;
 };
+
+export const deleteUserById = async (id: number) => {
+  await prismaClient.users.delete({
+    where: { id },
+  });
+};
+
+export const findUserById = async (
+  id: number,
+): Promise<UsersCreateInput | null> => {
+  const user = await prismaClient.users.findUnique({
+    where: { id },
+  });
+
+  return user;
+};
