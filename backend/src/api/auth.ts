@@ -1,6 +1,7 @@
 import { Request, Router } from "express";
 import { UsersCreateInput } from "../generated/prisma/models";
 import { createUser } from "../handlers";
+import { getUserList } from "../db/repositories";
 
 const router = Router();
 
@@ -39,9 +40,20 @@ router.post(
       const user = await createUser(userPayload);
       res.status(201).json({ user });
     } catch (error) {
-      res.status(500).json({ error: "Registration failed" });
+      res.status(500).json({
+        error: "Registration failed",
+      });
     }
   }
 );
+
+router.get("/users", async (_req, res) => {
+  try {
+    const users = await getUserList();
+    res.status(200).json({ users });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch users" });
+  }
+});
 
 export default router;

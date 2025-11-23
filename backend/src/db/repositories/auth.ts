@@ -10,3 +10,8 @@ export const createUser = async (
 
   return user;
 };
+
+export const getUserList = async (): Promise<UsersCreateInput[]> => {
+  const users = await prismaClient.users.findMany();
+  return users;
+};
