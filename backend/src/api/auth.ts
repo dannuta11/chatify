@@ -9,7 +9,7 @@ router.post(
   async (req: Request<unknown, unknown, UsersCreateInput>, res) => {
     try {
       const { email, password, username } = req.body;
-      if (!username || !email || !password) {
+      if (!username && !email && !password) {
         res.status(400).json({ error: "Missing required fields" });
         return;
       }
