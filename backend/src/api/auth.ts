@@ -22,7 +22,7 @@ router.post(
       }
 
       if (username === "") {
-        res.status(400).json({ error: "Missing name" });
+        res.status(400).json({ error: "Missing username" });
         return;
       }
 
