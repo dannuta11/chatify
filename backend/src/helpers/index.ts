@@ -1,1 +1,1 @@
-export { hashPassword } from "./bcrypt";
+export { hashPassword, comparePassword } from "./bcrypt";

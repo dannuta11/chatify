@@ -15,3 +15,13 @@ export const getUserList = async (): Promise<UsersCreateInput[]> => {
   const users = await prismaClient.users.findMany();
   return users;
 };
+
+export const findUserByEmail = async (
+  email: string
+): Promise<UsersCreateInput | null> => {
+  const user = await prismaClient.users.findUnique({
+    where: { email },
+  });
+
+  return user;
+};
