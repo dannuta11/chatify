@@ -1,11 +1,14 @@
 import _ from "lodash";
-import  * as Prisma from "../generated/prisma/internal/prismaNamespace";
+import { Decimal } from "../generated/prisma/internal/prismaNamespace";
 
-export const camelCaseKeys = (obj: Record<string, any>): Record<string, any> => {
+export const camelCaseKeys = (
+  obj: Record<string, any>
+): Record<string, any> => {
   if (_.isArray(obj)) {
     return obj.map(camelCaseKeys);
   }
-  if (obj instanceof Prisma.Decimal) {
+
+  if (obj instanceof Decimal) {
     return obj;
   }
 
@@ -15,8 +18,8 @@ export const camelCaseKeys = (obj: Record<string, any>): Record<string, any> => 
         const camelCasedKey = _.camelCase(key);
         const val = camelCaseKeys(value);
         return [camelCasedKey, val];
-      }),
+      })
     );
   }
   return obj;
-}
+};
