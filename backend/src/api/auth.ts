@@ -2,7 +2,7 @@ import { Request, Response, Router } from "express";
 import { UsersCreateInput } from "../generated/prisma/models";
 import { findUserByEmail } from "../db/repositories";
 import { comparePassword } from "../helpers";
-import { createToken } from "../helpers/token";
+import { generateAccessToken, generateRefreshToken } from "../helpers/token";
 
 // Types
 export interface LoginPayload
@@ -38,11 +38,13 @@ router.post(
         return;
       }
 
-      const token = createToken(user.id);
+      const accessToken = generateAccessToken(user.id);
+      const refreshToken = generateRefreshToken(user.id);
 
-      res
-        .status(200)
-        .json({ status: "success", message: "Login successful", user, token });
+      res.status(200).json({
+        accessToken,
+        refreshToken,
+      });
     } catch (error) {
       res.status(500).json({ error: "Login failed" });
     }
