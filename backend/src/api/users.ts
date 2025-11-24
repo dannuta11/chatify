@@ -16,7 +16,7 @@ router.delete(
   "/user/:id",
   async (req: Request<{ id: string }>, res: Response) => {
     try {
-      const userId = Number(req.params.id);
+      const userId = req.params.id;
 
       if (!userId) {
         res
@@ -43,7 +43,7 @@ router.delete(
         .status(500)
         .json({ error: "Failed to delete user", prismaError: error });
     }
-  }
+  },
 );
 
 export default router;

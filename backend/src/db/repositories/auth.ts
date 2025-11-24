@@ -19,6 +19,7 @@ export const createUser = async (
 
 export const getUserList = async (): Promise<AuthUser[]> => {
   const users = await prismaClient.users.findMany();
+
   return users;
 };
 
@@ -32,13 +33,13 @@ export const findUserByEmail = async (
   return user;
 };
 
-export const deleteUserById = async (id: number) => {
+export const deleteUserById = async (id: string) => {
   await prismaClient.users.delete({
     where: { id },
   });
 };
 
-export const findUserById = async (id: number): Promise<AuthUser | null> => {
+export const findUserById = async (id: string): Promise<AuthUser | null> => {
   const user = await prismaClient.users.findUnique({
     where: { id },
   });

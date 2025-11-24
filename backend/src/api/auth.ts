@@ -32,7 +32,7 @@ router.post(
 
       const isMatchingPasswords = await comparePassword(
         password,
-        user.password
+        user.password,
       );
 
       if (isMatchingPasswords === false) {
@@ -50,7 +50,7 @@ router.post(
     } catch (error) {
       res.status(500).json({ error: "Login failed" });
     }
-  }
+  },
 );
 
 router.post(
@@ -101,7 +101,7 @@ router.post(
     } catch (error) {
       res.status(500).json({ error: "Registration failed" });
     }
-  }
+  },
 );
 
 export default router;
