@@ -2,7 +2,7 @@ import { sign } from "jsonwebtoken";
 
 import { JWT_SECRET } from "../constants";
 
-export const generateAccessToken = (userId: number): string => {
+export const generateAccessToken = (userId: string): string => {
   const token = sign({ userId }, JWT_SECRET, {
     expiresIn: "7d",
   });
@@ -10,7 +10,7 @@ export const generateAccessToken = (userId: number): string => {
   return token;
 };
 
-export const generateRefreshToken = (userId: number): string => {
+export const generateRefreshToken = (userId: string): string => {
   const token = sign({ userId }, JWT_SECRET);
 
   return token;
