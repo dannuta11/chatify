@@ -1,9 +1,15 @@
-import { UsersCreateInput } from "../../generated/prisma/models/Users";
+import {
+  UsersCreateInput,
+  UsersUncheckedCreateInput,
+} from "../../generated/prisma/models/Users";
 import prismaClient from "../schema/client";
+
+// Types
+export type AuthUser = Required<UsersUncheckedCreateInput>;
 
 export const createUser = async (
   payload: UsersCreateInput,
-): Promise<UsersCreateInput> => {
+): Promise<AuthUser> => {
   const user = await prismaClient.users.create({
     data: payload,
   });
@@ -11,14 +17,14 @@ export const createUser = async (
   return user;
 };
 
-export const getUserList = async (): Promise<UsersCreateInput[]> => {
+export const getUserList = async (): Promise<AuthUser[]> => {
   const users = await prismaClient.users.findMany();
   return users;
 };
 
 export const findUserByEmail = async (
   email: string,
-): Promise<UsersCreateInput | null> => {
+): Promise<AuthUser | null> => {
   const user = await prismaClient.users.findUnique({
     where: { email },
   });
@@ -32,9 +38,7 @@ export const deleteUserById = async (id: number) => {
   });
 };
 
-export const findUserById = async (
-  id: number,
-): Promise<UsersCreateInput | null> => {
+export const findUserById = async (id: number): Promise<AuthUser | null> => {
   const user = await prismaClient.users.findUnique({
     where: { id },
   });
