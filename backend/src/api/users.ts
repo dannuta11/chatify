@@ -2,6 +2,7 @@ import { Request, Response, Router } from "express";
 import { UsersCreateInput } from "../generated/prisma/models";
 import { createUser } from "../handlers";
 import { getUserList, deleteUserById, findUserById } from "../db/repositories";
+import {camelCaseKeys} from "../helpers/utils";
 
 const router = Router();
 
@@ -38,7 +39,8 @@ router.post(
       }
 
       const user = await createUser(userPayload);
-      res.status(201).json({ user });
+      const camelCasedUser = camelCaseKeys(user);
+      res.status(201).json({ user: camelCasedUser });
     } catch (error) {
       res.status(500).json({ error: "Registration failed" });
     }
@@ -53,6 +55,7 @@ router.get("/users", async (_, res: Response) => {
     res.status(500).json({ error: "Failed to fetch users" });
   }
 });
+
 router.delete(
   "/user/:id",
   async (req: Request<{ id: string }>, res: Response) => {
