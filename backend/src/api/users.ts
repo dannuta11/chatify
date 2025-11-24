@@ -1,5 +1,9 @@
 import { Request, Response, Router } from "express";
-import { getUserList, deleteUserById, findUserById } from "../db/repositories";
+import {
+  getUserList,
+  deleteUserById,
+  findUserById,
+} from "../db/repositories/auth";
 
 const router = Router();
 
