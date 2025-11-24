@@ -8,7 +8,8 @@
     "generate": "prisma generate",
     "db-pull": "prisma db pull",
     "db-push": "prisma db push",
-    "migrate-dev": "prisma migrate dev"
+    "migrate-dev": "prisma migrate dev",
+    "format": "prettier --write ."
   },
   "keywords": [],
   "author": "",
@@ -18,11 +19,16 @@
     "@types/bcrypt": "^6.0.0",
     "bcrypt": "^6.0.0",
     "dotenv": "^17.2.3",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/lodash": "^4.17.21",
     "@types/node": "^24.8.1",
+    "prettier": "3.6.2",
     "prisma": "^6.17.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
