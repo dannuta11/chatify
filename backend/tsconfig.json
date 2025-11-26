@@ -15,8 +15,7 @@
       "@utils/*": ["./utils/*"],
       "@db/*": ["./db/*"],
       "@api/*": ["./api/*"],
-      "@constants": ["./constants"],
-      "@types/*": ["./types/*"]
+      "@constants": ["./constants"]
     }
   },
   "include": ["src/**/*"],
