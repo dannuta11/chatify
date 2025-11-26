@@ -1,10 +1,10 @@
-import { sign } from "jsonwebtoken";
+import { sign } from 'jsonwebtoken';
 
-import { JWT_SECRET } from "../constants";
+import { JWT_SECRET } from '../constants';
 
 export const generateAccessToken = (userId: string): string => {
   const token = sign({ userId }, JWT_SECRET, {
-    expiresIn: "7d",
+    expiresIn: '7d',
   });
 
   return token;

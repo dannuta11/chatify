@@ -1,6 +1,6 @@
-import { UsersCreateInput } from "../generated/prisma/models/Users";
-import { createUser as initializeUser } from "../db/repositories";
-import { hashPassword } from "../helpers";
+import { UsersCreateInput } from '../generated/prisma/models/Users';
+import { createUser as initializeUser } from '../db/repositories';
+import { hashPassword } from '../helpers';
 
 export const createUser = async ({
   username,
