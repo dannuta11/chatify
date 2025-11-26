@@ -1,5 +1,5 @@
-import _ from "lodash";
 import { Decimal } from "../generated/prisma/internal/prismaNamespace";
+import _ from "lodash";
 
 export const camelCaseKeys = (
   obj: Record<string, any>,

@@ -1,5 +1,4 @@
 import { Request, Response, Router } from "express";
-
 import { UsersCreateInput } from "../generated/prisma/models";
 import { findUserByEmail } from "../db/repositories/auth";
 import { comparePassword } from "../helpers/bcrypt";

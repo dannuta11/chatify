@@ -1,35 +1,26 @@
-import js from "@eslint/js";
-import globals from "globals";
-import tseslint from "typescript-eslint";
+import eslint from "@eslint/js";
 import { defineConfig } from "eslint/config";
+import tseslint from "typescript-eslint";
 
-export default defineConfig([
+export default defineConfig(
+  eslint.configs.recommended,
+  tseslint.configs.strictTypeChecked,
+  tseslint.configs.stylisticTypeChecked,
   {
-    files: ["**/*.{js,mjs,cjs,ts,mts,cts}"],
-    plugins: { js },
-    extends: ["js/recommended"],
-    languageOptions: { globals: globals.browser },
-  },
-  tseslint.configs.recommended,
-  {
-    rules: {
-      "no-unused-vars": "warn",
-      "no-undef": "warn",
-      "prefer-const": "error",
-      "import/order": [
-        1,
-        {
-          groups: [
-            "external",
-            "builtin",
-            "internal",
-            "sibling",
-            "parent",
-            "index",
-          ],
-          "newlines-between": "always",
-        },
-      ],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+      },
     },
   },
-]);
+  {
+    files: ["**/*.ts"],
+    rules: {
+      // turns a rule on with no configuration (i.e. uses the default configuration)
+      "@typescript-eslint/array-type": "error",
+      // turns on a rule with configuration
+      "@typescript-eslint/no-explicit-any": ["error", { ignoreRestArgs: true }],
+      "no-undef": "off",
+    },
+  },
+);

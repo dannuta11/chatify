@@ -1,6 +1,5 @@
 import express from "express";
 import path from "path";
-
 import { PORT } from "./constants";
 import auth from "./api/auth";
 import users from "./api/users";
