@@ -9,6 +9,13 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts', '.js'], // Resolve these file extensions when importing
+    alias: {
+      '@handlers': path.resolve(__dirname, 'src/handlers/'),
+      '@utils': path.resolve(__dirname, 'src/utils/'),
+      '@db': path.resolve(__dirname, 'src/db/'),
+      '@api': path.resolve(__dirname, 'src/api/'),
+      '@constants': path.resolve(__dirname, 'src/constants'),
+    },
   },
   module: {
     rules: [
