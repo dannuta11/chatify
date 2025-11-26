@@ -11,8 +11,12 @@
     "moduleResolution": "node",
     "baseUrl": "./src",
     "paths": {
-      "@helpers/*": ["./helpers/*"],
-      "@handlers/*": ["./handlers/*"]
+      "@handlers/*": ["./handlers/*"],
+      "@utils/*": ["./utils/*"],
+      "@db/*": ["./db/*"],
+      "@api/*": ["./api/*"],
+      "@constants": ["./constants"],
+      "@types/*": ["./types/*"]
     }
   },
   "include": ["src/**/*"],

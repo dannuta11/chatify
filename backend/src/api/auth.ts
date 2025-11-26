@@ -1,10 +1,11 @@
 import { Request, Response, Router } from 'express';
 import { UsersCreateInput } from '../generated/prisma/models';
-import { findUserByEmail } from '../db/repositories';
-import { comparePassword } from '../helpers';
-import { generateAccessToken, generateRefreshToken } from '../helpers/token';
-import { createUser } from '../handlers';
-import { camelCaseKeys } from '../helpers/utils';
+
+import { findUserByEmail } from '@db/repositories/auth';
+import { comparePassword } from '@utils/bcrypt';
+import { generateAccessToken, generateRefreshToken } from '@utils/token';
+import { createUser } from '@handlers/auth';
+import { camelCaseKeys } from '@utils/camel-case-keys';
 
 // Types
 export interface LoginPayload
