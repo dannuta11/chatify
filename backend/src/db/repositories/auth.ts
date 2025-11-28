@@ -1,7 +1,7 @@
 import {
   UsersCreateInput,
   UsersUncheckedCreateInput,
-} from '../../generated/prisma/models/Users';
+} from '@prisma-models/Users';
 import prismaClient from '@db/schema/client';
 
 // Types

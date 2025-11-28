@@ -10,7 +10,8 @@
     "migrate-dev": "prisma migrate dev",
     "format": "prettier --write .",
     "build": "tsc",
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "generate-build": "tsc --showConfig"
   },
   "keywords": [],
   "author": "",

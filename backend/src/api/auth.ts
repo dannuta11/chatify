@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
-import { UsersCreateInput } from '../generated/prisma/models';
 
+import { UsersCreateInput } from '@prisma-models/Users';
 import { findUserByEmail } from '@db/repositories/auth';
 import { comparePassword } from '@utils/bcrypt';
 import { generateAccessToken, generateRefreshToken } from '@utils/token';
