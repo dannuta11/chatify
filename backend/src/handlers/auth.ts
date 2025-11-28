@@ -1,4 +1,4 @@
-import { UsersCreateInput } from '../generated/prisma/models/Users';
+import { UsersCreateInput } from '@prisma-models/Users';
 import { createUser as initializeUser } from '@db/repositories/auth';
 import { hashPassword } from '@utils/bcrypt';
 
