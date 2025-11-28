@@ -1,9 +1,47 @@
-import js from "@eslint/js";
-import globals from "globals";
-import tseslint from "typescript-eslint";
-import { defineConfig } from "eslint/config";
+import pluginImport from 'eslint-plugin-import';
+import tsParser from '@typescript-eslint/parser';
 
-export default defineConfig([
-  { files: ["**/*.{js,mjs,cjs,ts,mts,cts}"], plugins: { js }, extends: ["js/recommended"], languageOptions: { globals: globals.browser } },
-  tseslint.configs.recommended,
-]);
+export default [
+  {
+    files: ['**/*.ts'],
+    plugins: { import: pluginImport },
+    ignores: ['src/generated/**'],
+    languageOptions: {
+      parser: tsParser,
+    },
+    settings: {
+      'import/resolver': {
+        typescript: {
+          alwaysTryTypes: true,
+          project: ['./tsconfig.json'],
+        },
+      },
+    },
+    rules: {
+      'import/order': [
+        'error',
+        {
+          groups: [
+            'builtin',
+            'external',
+            'internal',
+            'parent',
+            'sibling',
+            'index',
+            'type',
+          ],
+          pathGroups: [
+            {
+              pattern: '@*/**',
+              group: 'internal',
+              position: 'before',
+            },
+          ],
+          pathGroupsExcludedImportTypes: ['builtin'],
+          alphabetize: { order: 'asc', caseInsensitive: true },
+          'newlines-between': 'always',
+        },
+      ],
+    },
+  },
+];
