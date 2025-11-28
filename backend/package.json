@@ -11,7 +11,8 @@
     "format": "prettier --write .",
     "build": "tsc",
     "dev": "nodemon",
-    "generate-build": "tsc --showConfig"
+    "lint:fix": "eslint . --fix",
+    "lint": "eslint 'src/**/*.{ts,js}'"
   },
   "keywords": [],
   "author": "",
@@ -26,16 +27,24 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.1",
     "@types/express": "^5.0.3",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/lodash": "^4.17.21",
     "@types/node": "^24.8.1",
+    "@typescript-eslint/parser": "^8.48.0",
+    "eslint": "^9.39.1",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.32.0",
+    "globals": "^16.5.0",
+    "jiti": "^2.6.1",
     "nodemon": "^3.1.11",
     "prettier": "3.6.2",
     "prisma": "^6.17.1",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.48.0"
   },
   "prisma": {
     "schema": "src/db/schema/schema.prisma"

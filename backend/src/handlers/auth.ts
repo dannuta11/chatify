@@ -1,5 +1,5 @@
-import { UsersCreateInput } from '@prisma-models/Users';
 import { createUser as initializeUser } from '@db/repositories/auth';
+import { UsersCreateInput } from '@prisma-models/Users';
 import { hashPassword } from '@utils/bcrypt';
 
 export const createUser = async ({

@@ -15,7 +15,7 @@
       "@utils/*": ["./utils/*"],
       "@db/*": ["./db/*"],
       "@api/*": ["./api/*"],
-      "@constants": ["./constants"],
+      "@constants/*": ["./constants/*"],
       "@prisma-models/*": ["./generated/prisma/models/*"],
       "@prisma-internal/*": ["./generated/prisma/internal/*"]
     }

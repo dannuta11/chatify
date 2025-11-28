@@ -1,8 +1,8 @@
+import prismaClient from '@db/schema/client';
 import {
   UsersCreateInput,
   UsersUncheckedCreateInput,
 } from '@prisma-models/Users';
-import prismaClient from '@db/schema/client';
 
 // Types
 export type AuthUser = Required<UsersUncheckedCreateInput>;
