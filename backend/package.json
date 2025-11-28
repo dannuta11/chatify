@@ -11,7 +11,8 @@
     "format": "prettier --write .",
     "build": "tsc",
     "dev": "nodemon",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "lint": "eslint 'src/**/*.{ts,tsx,js,jsx}'"
   },
   "keywords": [],
   "author": "",

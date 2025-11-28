@@ -1,6 +1,6 @@
 import { sign } from 'jsonwebtoken';
 
-import { JWT_SECRET } from '@constants';
+import { JWT_SECRET } from '@constants/index';
 
 export const generateAccessToken = (userId: string): string => {
   const token = sign({ userId }, JWT_SECRET, {

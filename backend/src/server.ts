@@ -4,8 +4,7 @@ import express from 'express';
 
 import auth from '@api/auth';
 import users from '@api/users';
-
-import { PORT } from '@constants';
+import { PORT } from '@constants/index';
 
 const app = express();
 
