@@ -4,12 +4,14 @@
   "description": "",
   "type": "commonjs",
   "scripts": {
-    "dev": "tsc --watch & nodemon dist/server.js",
     "generate": "prisma generate",
     "db-pull": "prisma db pull",
     "db-push": "prisma db push",
     "migrate-dev": "prisma migrate dev",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "build": "tsc",
+    "dev": "nodemon",
+    "generate-build": "tsc --showConfig"
   },
   "keywords": [],
   "author": "",
@@ -28,9 +30,11 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/lodash": "^4.17.21",
     "@types/node": "^24.8.1",
+    "nodemon": "^3.1.11",
     "prettier": "3.6.2",
     "prisma": "^6.17.1",
     "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.9.3"
   },
   "prisma": {
