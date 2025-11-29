@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { z } from 'zod';
 
 import AuthRepository from '@db/repositories/auth';
+import UserRepository from '@db/repositories/users';
 import { UsersCreateInput } from '@prisma-models/Users';
 import { comparePassword, hashPassword } from '@utils/bcrypt';
 import { camelCaseKeys } from '@utils/camel-case-keys';
@@ -21,7 +22,7 @@ export class Auth {
     const { email, password } = req.body;
 
     try {
-      const user = await AuthRepository.findUserByEmail(email);
+      const user = await UserRepository.findUserByEmail(email);
 
       if (user === null) {
         Send.clientErrorResponses(res, {
@@ -76,7 +77,7 @@ export class Auth {
         return;
       }
 
-      const checkExistingUser = await AuthRepository.findUserByEmail(email);
+      const checkExistingUser = await UserRepository.findUserByEmail(email);
 
       if (checkExistingUser !== null) {
         Send.clientErrorResponses(res, {
@@ -88,7 +89,7 @@ export class Auth {
       }
 
       const hashedPassword = await hashPassword(password);
-      const user = await AuthRepository.createUser({
+      const user = await AuthRepository.register({
         username,
         email,
         password: hashedPassword,

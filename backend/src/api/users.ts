@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 
-import AuthRepository from '@db/repositories/auth';
+import UserRepository from '@db/repositories/users';
 import { Send } from '@utils/responses';
 
 export default class User {
   static async getUserList(_: Request, res: Response) {
     try {
-      const users = await AuthRepository.getUserList();
+      const users = await UserRepository.getUserList();
       Send.successfulResponses(res, users);
     } catch {
       Send.serverErrorResponses(res, {
@@ -19,7 +19,7 @@ export default class User {
     try {
       const userId = req.params.id;
 
-      const user = await AuthRepository.findUserById(userId);
+      const user = await UserRepository.findUserById(userId);
 
       if (user === null) {
         Send.clientErrorResponses(res, {
@@ -42,7 +42,7 @@ export default class User {
     try {
       const userId = req.params.id;
 
-      const user = await AuthRepository.findUserById(userId);
+      const user = await UserRepository.findUserById(userId);
       if (user === null) {
         Send.clientErrorResponses(res, {
           message: `User with id ${userId} not found`,
@@ -52,7 +52,7 @@ export default class User {
         return;
       }
 
-      await AuthRepository.deleteUserById(userId);
+      await UserRepository.deleteUserById(userId);
       Send.successfulResponses(res, null, 204);
     } catch {
       Send.serverErrorResponses(res, {
