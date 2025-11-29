@@ -19,8 +19,7 @@ export default abstract class BaseRouter {
   protected abstract routes(): RouteConfig[];
 
   private registerRoutes(): void {
-    this.routes().forEach((route) => {
-      const { path, method, handler, middlewares = [] } = route;
+    this.routes().forEach(({ path, method, handler, middlewares = [] }) => {
       this.router[method](path, ...middlewares, handler);
     });
   }
