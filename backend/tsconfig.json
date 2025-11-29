@@ -17,6 +17,7 @@
       "@api/*": ["./api/*"],
       "@constants/*": ["./constants/*"],
       "@validations/*": ["./validations/*"],
+      "@routes/*": ["./routes/*"],
       // Aliases for prisma generated files
       "@prisma-models/*": ["./generated/prisma/models/*"],
       "@prisma-internal/*": ["./generated/prisma/internal/*"]

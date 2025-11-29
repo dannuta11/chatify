@@ -2,9 +2,9 @@ import path from 'path';
 
 import express, { Express } from 'express';
 
-import auth from '@api/auth';
 import users from '@api/users';
 import { PORT } from '@constants/index';
+import auth from '@routes/auth';
 import { Send } from '@utils/responses';
 
 export default class App {

@@ -1,4 +1,4 @@
-import { Request, Response, Router } from 'express';
+import { Request, Response } from 'express';
 import { z } from 'zod';
 
 import { findUserByEmail } from '@db/repositories/auth';
@@ -17,15 +17,11 @@ export interface LoginPayload
 type LoginBody = z.infer<typeof LoginSchema>;
 type RegisterBody = z.infer<typeof RegisterSchema>;
 
-// Router
-const router = Router();
+export class Auth {
+  static async login(req: Request<unknown, unknown, LoginBody>, res: Response) {
+    const { email, password } = req.body;
 
-router.post(
-  '/login',
-  async (req: Request<unknown, unknown, LoginBody>, res: Response) => {
     try {
-      const { email, password } = req.body;
-
       const user = await findUserByEmail(email);
 
       if (user === null) {
@@ -60,11 +56,11 @@ router.post(
       });
     }
   }
-);
 
-router.post(
-  '/register',
-  async (req: Request<unknown, unknown, RegisterBody>, res: Response) => {
+  static async register(
+    req: Request<unknown, unknown, RegisterBody>,
+    res: Response
+  ) {
     try {
       const payload = req.body;
       const userPayload = {
@@ -98,6 +94,4 @@ router.post(
       Send.serverErrorResponses(res, { message: 'Registration failed' });
     }
   }
-);
-
-export default router;
+}
