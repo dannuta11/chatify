@@ -8,22 +8,21 @@ import { LoginSchema } from '@validations/auth';
 type LoginBody = z.infer<typeof LoginSchema>;
 
 export class Validation {
-  static validateBody<T extends z.ZodTypeAny>(schema: T) {
+  static validateBody(schema: z.ZodTypeAny) {
     return (
       req: Request<{}, {}, LoginBody>,
       res: Response,
       next: NextFunction
     ) => {
       try {
-        const body = req.body;
-        schema.parse(body);
-        return next();
+        schema.parse(req.body);
+        next();
       } catch (error) {
         if (error instanceof z.ZodError) {
           const formattedErrors: Record<string, string[]> = {};
 
           error.issues.forEach(({ path, message }) => {
-            const key = path[0] as string;
+            const key = path.join('');
 
             if (!formattedErrors[key]) {
               formattedErrors[key] = [];

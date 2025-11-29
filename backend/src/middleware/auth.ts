@@ -20,8 +20,7 @@ export default class AuthMiddleware {
     }
 
     try {
-      const decoded = verifyToken<DecodedToken>(authorizationHeader);
-      (req as any).userId = decoded.userId;
+      verifyToken<DecodedToken>(authorizationHeader);
     } catch {
       Send.clientErrorResponses(res, {
         message: 'Invalid or expired token',

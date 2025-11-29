@@ -1,6 +1,6 @@
 import { Auth } from '@api/auth';
 import { Validation } from '@middleware/validation';
-import { LoginSchema } from '@validations/auth';
+import { LoginSchema, RegisterSchema } from '@validations/auth';
 
 import BaseRouter, { RouteConfig } from './router';
 
@@ -17,6 +17,7 @@ class AuthRouter extends BaseRouter {
         path: '/register',
         method: 'post',
         handler: Auth.register,
+        middlewares: [Validation.validateBody(RegisterSchema)],
       },
     ];
   }
