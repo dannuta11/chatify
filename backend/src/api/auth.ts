@@ -74,26 +74,11 @@ router.post(
       };
       const { username, email, password } = userPayload;
 
-      if (!username && !email && !password) {
+      if (!username || !email || !password) {
         return Send.clientErrorResponses(res, {
           message: 'Missing required fields',
           statusCode: 400,
         });
-      }
-
-      if (username === '') {
-        res.status(400).json({ error: 'Missing username' });
-        return;
-      }
-
-      if (email === '') {
-        res.status(400).json({ error: 'Missing email' });
-        return;
-      }
-
-      if (password === '') {
-        res.status(400).json({ error: 'Missing password' });
-        return;
       }
 
       const checkExistingUser = await findUserByEmail(email);
