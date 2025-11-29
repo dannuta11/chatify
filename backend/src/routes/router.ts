@@ -5,7 +5,7 @@ export type RouteConfig = {
   path: string;
   method: 'get' | 'post' | 'put' | 'delete';
   handler: RequestHandler;
-  middleware?: RequestHandler[];
+  middlewares?: RequestHandler[];
 };
 
 export default abstract class BaseRouter {
@@ -20,8 +20,8 @@ export default abstract class BaseRouter {
 
   private registerRoutes(): void {
     this.routes().forEach((route) => {
-      const { path, method, handler, middleware = [] } = route;
-      this.router[method](path, ...middleware, handler);
+      const { path, method, handler, middlewares = [] } = route;
+      this.router[method](path, ...middlewares, handler);
     });
   }
 }

@@ -1,10 +1,9 @@
 import { Request, Response } from 'express';
 import { z } from 'zod';
 
-import { findUserByEmail } from '@db/repositories/auth';
-import { createUser } from '@handlers/auth';
+import AuthRepository from '@db/repositories/auth';
 import { UsersCreateInput } from '@prisma-models/Users';
-import { comparePassword } from '@utils/bcrypt';
+import { comparePassword, hashPassword } from '@utils/bcrypt';
 import { camelCaseKeys } from '@utils/camel-case-keys';
 import { Send } from '@utils/responses';
 import { generateAccessToken, generateRefreshToken } from '@utils/token';
@@ -22,13 +21,15 @@ export class Auth {
     const { email, password } = req.body;
 
     try {
-      const user = await findUserByEmail(email);
+      const user = await AuthRepository.findUserByEmail(email);
 
       if (user === null) {
-        return Send.clientErrorResponses(res, {
+        Send.clientErrorResponses(res, {
           message: 'User not found',
           statusCode: 404,
         });
+
+        return;
       }
 
       const isMatchingPasswords = await comparePassword(
@@ -37,10 +38,12 @@ export class Auth {
       );
 
       if (isMatchingPasswords === false) {
-        return Send.clientErrorResponses(res, {
+        Send.clientErrorResponses(res, {
           message: 'Invalid credentials',
           statusCode: 401,
         });
+
+        return;
       }
 
       const accessToken = generateAccessToken(user.id);
@@ -62,32 +65,34 @@ export class Auth {
     res: Response
   ) {
     try {
-      const payload = req.body;
-      const userPayload = {
-        username: payload.username.trim(),
-        email: payload.email.trim(),
-        password: payload.password.trim(),
-      };
-      const { username, email, password } = userPayload;
+      const { username, email, password } = req.body;
 
       if (!username || !email || !password) {
-        return Send.clientErrorResponses(res, {
+        Send.clientErrorResponses(res, {
           message: 'Missing required fields',
           statusCode: 400,
         });
+
+        return;
       }
 
-      const checkExistingUser = await findUserByEmail(email);
+      const checkExistingUser = await AuthRepository.findUserByEmail(email);
 
       if (checkExistingUser !== null) {
         Send.clientErrorResponses(res, {
           message: 'This email is already registered',
           statusCode: 409,
         });
+
         return;
       }
 
-      const user = await createUser(userPayload);
+      const hashedPassword = await hashPassword(password);
+      const user = await AuthRepository.createUser({
+        username,
+        email,
+        password: hashedPassword,
+      });
       const camelCasedUser = camelCaseKeys(user);
       Send.successfulResponses(res, camelCasedUser, 201);
     } catch {

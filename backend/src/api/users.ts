@@ -1,65 +1,63 @@
-import { Request, Response, Router } from 'express';
+import { Request, Response } from 'express';
 
-import {
-  getUserList,
-  deleteUserById,
-  findUserById,
-} from '@db/repositories/auth';
+import AuthRepository from '@db/repositories/auth';
 import { Send } from '@utils/responses';
 
-const router = Router();
-
-router.get('/users', async (_, res: Response) => {
-  try {
-    const users = await getUserList();
-    return Send.successfulResponses(res, users);
-  } catch {
-    return Send.serverErrorResponses(res, { message: 'Failed to fetch users' });
+export default class User {
+  static async getUserList(_: Request, res: Response) {
+    try {
+      const users = await AuthRepository.getUserList();
+      Send.successfulResponses(res, users);
+    } catch {
+      Send.serverErrorResponses(res, {
+        message: 'Failed to fetch users',
+      });
+    }
   }
-});
 
-router.delete(
-  '/user/:id',
-  async (req: Request<{ id: string }>, res: Response) => {
+  static async getUserById(req: Request, res: Response) {
     try {
       const userId = req.params.id;
 
-      const user = await findUserById(userId);
+      const user = await AuthRepository.findUserById(userId);
+
       if (user === null) {
-        return Send.clientErrorResponses(res, {
+        Send.clientErrorResponses(res, {
           message: `User with id ${userId} not found`,
           statusCode: 404,
         });
+
+        return;
       }
 
-      await deleteUserById(userId);
-      return Send.successfulResponses(res, null, 204);
+      Send.successfulResponses(res, user);
     } catch {
-      return Send.serverErrorResponses(res, {
+      Send.serverErrorResponses(res, {
+        message: 'Failed to fetch user',
+      });
+    }
+  }
+
+  static async deleteUserById(req: Request, res: Response) {
+    try {
+      const userId = req.params.id;
+
+      const user = await AuthRepository.findUserById(userId);
+      if (user === null) {
+        Send.clientErrorResponses(res, {
+          message: `User with id ${userId} not found`,
+          statusCode: 404,
+        });
+
+        return;
+      }
+
+      await AuthRepository.deleteUserById(userId);
+      Send.successfulResponses(res, null, 204);
+    } catch {
+      Send.serverErrorResponses(res, {
         message: 'Failed to delete user',
       });
     }
   }
-);
-
-router.get('/user/:id', async (req: Request<{ id: string }>, res: Response) => {
-  try {
-    const userId = req.params.id;
-
-    const user = await findUserById(userId);
-    if (user === null) {
-      return Send.clientErrorResponses(res, {
-        message: `User with id ${userId} not found`,
-        statusCode: 404,
-      });
-    }
-
-    return Send.successfulResponses(res, user);
-  } catch {
-    return Send.serverErrorResponses(res, {
-      message: 'Failed to fetch user',
-    });
-  }
-});
-
-export default router;
+}

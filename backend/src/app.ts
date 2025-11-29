@@ -2,9 +2,9 @@ import path from 'path';
 
 import express, { Express } from 'express';
 
-import users from '@api/users';
 import { PORT } from '@constants/index';
-import auth from '@routes/auth';
+import { authRouters } from '@routes/auth';
+import { userRouters } from '@routes/users';
 import { Send } from '@utils/responses';
 
 export default class App {
@@ -23,8 +23,8 @@ export default class App {
   }
 
   private initRoutes(): void {
-    this.app.use('/api/auth', auth);
-    this.app.use('/api/users', users);
+    this.app.use('/api/auth', authRouters);
+    this.app.use('/api/users', userRouters);
 
     // Test route to see if express is working
     this.app.get('/test', (req, res) => {
