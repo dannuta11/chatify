@@ -18,6 +18,7 @@ export default [
       },
     },
     rules: {
+      'no-unused-vars': 'error',
       'import/order': [
         'error',
         {

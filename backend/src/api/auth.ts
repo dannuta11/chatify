@@ -1,33 +1,35 @@
-import { Request, Response, Router } from 'express';
+import { Request, Response } from 'express';
+import { z } from 'zod';
 
-import { findUserByEmail } from '@db/repositories/auth';
-import { createUser } from '@handlers/auth';
+import AuthRepository from '@db/repositories/auth';
+import UserRepository from '@db/repositories/users';
 import { UsersCreateInput } from '@prisma-models/Users';
-import { comparePassword } from '@utils/bcrypt';
+import { comparePassword, hashPassword } from '@utils/bcrypt';
 import { camelCaseKeys } from '@utils/camel-case-keys';
+import { Send } from '@utils/responses';
 import { generateAccessToken, generateRefreshToken } from '@utils/token';
+import { LoginSchema, RegisterSchema } from '@validations/auth';
 
 // Types
 export interface LoginPayload
   extends Pick<UsersCreateInput, 'email' | 'password'> {}
 
-const router = Router();
+type LoginBody = z.infer<typeof LoginSchema>;
+type RegisterBody = z.infer<typeof RegisterSchema>;
 
-router.post(
-  '/login',
-  async (req: Request<unknown, unknown, LoginPayload>, res: Response) => {
+export class Auth {
+  static async login(req: Request<unknown, unknown, LoginBody>, res: Response) {
+    const { email, password } = req.body;
+
     try {
-      const { email, password } = req.body;
-
-      if (!email || !password) {
-        res.status(400).json({ error: 'Email and password are required' });
-        return;
-      }
-
-      const user = await findUserByEmail(email);
+      const user = await UserRepository.findUserByEmail(email);
 
       if (user === null) {
-        res.status(404).json({ error: 'User not found' });
+        Send.clientErrorResponses(res, {
+          message: 'User not found',
+          statusCode: 404,
+        });
+
         return;
       }
 
@@ -37,72 +39,65 @@ router.post(
       );
 
       if (isMatchingPasswords === false) {
-        res.status(401).json({ error: 'Invalid credentials' });
+        Send.clientErrorResponses(res, {
+          message: 'Invalid credentials',
+          statusCode: 401,
+        });
+
         return;
       }
 
       const accessToken = generateAccessToken(user.id);
       const refreshToken = generateRefreshToken(user.id);
 
-      res.status(200).json({
+      Send.successfulResponses(res, {
         accessToken,
         refreshToken,
       });
-    } catch (error) {
-      res.status(500).json({ error: 'Login failed' });
+    } catch {
+      Send.serverErrorResponses(res, {
+        message: 'Login failed',
+      });
     }
   }
-);
 
-router.post(
-  '/user',
-  async (req: Request<unknown, unknown, UsersCreateInput>, res: Response) => {
+  static async register(
+    req: Request<unknown, unknown, RegisterBody>,
+    res: Response
+  ) {
     try {
-      const payload = req.body;
-      const userPayload = {
-        username: payload.username.trim(),
-        email: payload.email.trim(),
-        password: payload.password.trim(),
-      };
-      const { username, email, password } = userPayload;
+      const { username, email, password } = req.body;
 
-      if (!username && !email && !password) {
-        res.status(400).json({ error: 'Missing required fields' });
+      if (!username || !email || !password) {
+        Send.clientErrorResponses(res, {
+          message: 'Missing required fields',
+          statusCode: 400,
+        });
+
         return;
       }
 
-      if (username === '') {
-        res.status(400).json({ error: 'Missing username' });
-        return;
-      }
-
-      if (email === '') {
-        res.status(400).json({ error: 'Missing email' });
-        return;
-      }
-
-      if (password === '') {
-        res.status(400).json({ error: 'Missing password' });
-        return;
-      }
-
-      const checkExistingUser = await findUserByEmail(email);
+      const checkExistingUser = await UserRepository.findUserByEmail(email);
 
       if (checkExistingUser !== null) {
-        res.status(409).json({
-          status: 'fail',
+        Send.clientErrorResponses(res, {
           message: 'This email is already registered',
+          statusCode: 409,
         });
+
         return;
       }
 
-      const user = await createUser(userPayload);
+      const hashedPassword = await hashPassword(password);
+      const user = await AuthRepository.register({
+        username,
+        email,
+        password: hashedPassword,
+      });
       const camelCasedUser = camelCaseKeys(user);
-      res.status(201).json({ user: camelCasedUser });
-    } catch (error) {
-      res.status(500).json({ error: 'Registration failed' });
+      Send.successfulResponses(res, camelCasedUser, 201);
+    } catch {
+      Send.serverErrorResponses(res, { message: 'Registration failed' });
     }
   }
-);
-
-export default router;
+}

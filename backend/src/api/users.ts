@@ -1,54 +1,63 @@
-import { Request, Response, Router } from 'express';
+import { Request, Response } from 'express';
 
-import {
-  getUserList,
-  deleteUserById,
-  findUserById,
-} from '@db/repositories/auth';
+import UserRepository from '@db/repositories/users';
+import { Send } from '@utils/responses';
 
-const router = Router();
-
-router.get('/users', async (_, res: Response) => {
-  try {
-    const users = await getUserList();
-    res.status(200).json({ users });
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch users' });
+export default class User {
+  static async getUserList(_: Request, res: Response) {
+    try {
+      const users = await UserRepository.getUserList();
+      Send.successfulResponses(res, users);
+    } catch {
+      Send.serverErrorResponses(res, {
+        message: 'Failed to fetch users',
+      });
+    }
   }
-});
 
-router.delete(
-  '/user/:id',
-  async (req: Request<{ id: string }>, res: Response) => {
+  static async getUserById(req: Request, res: Response) {
     try {
       const userId = req.params.id;
 
-      if (!userId) {
-        res
-          .status(400)
-          .json({ status: 'Fail', message: 'User ID is required' });
-        return;
-      }
+      const user = await UserRepository.findUserById(userId);
 
-      const user = await findUserById(userId);
       if (user === null) {
-        res.status(404).json({
-          status: 'Fail',
+        Send.clientErrorResponses(res, {
           message: `User with id ${userId} not found`,
+          statusCode: 404,
         });
+
         return;
       }
 
-      await deleteUserById(userId);
-      res
-        .status(200)
-        .json({ status: 'Success', message: 'User deleted successfully' });
-    } catch (error) {
-      res
-        .status(500)
-        .json({ error: 'Failed to delete user', prismaError: error });
+      Send.successfulResponses(res, user);
+    } catch {
+      Send.serverErrorResponses(res, {
+        message: 'Failed to fetch user',
+      });
     }
   }
-);
 
-export default router;
+  static async deleteUserById(req: Request, res: Response) {
+    try {
+      const userId = req.params.id;
+
+      const user = await UserRepository.findUserById(userId);
+      if (user === null) {
+        Send.clientErrorResponses(res, {
+          message: `User with id ${userId} not found`,
+          statusCode: 404,
+        });
+
+        return;
+      }
+
+      await UserRepository.deleteUserById(userId);
+      Send.successfulResponses(res, null, 204);
+    } catch {
+      Send.serverErrorResponses(res, {
+        message: 'Failed to delete user',
+      });
+    }
+  }
+}
