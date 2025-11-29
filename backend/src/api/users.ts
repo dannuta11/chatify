@@ -5,15 +5,16 @@ import {
   deleteUserById,
   findUserById,
 } from '@db/repositories/auth';
+import { Send } from '@utils/responses';
 
 const router = Router();
 
 router.get('/users', async (_, res: Response) => {
   try {
     const users = await getUserList();
-    res.status(200).json({ users });
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch users' });
+    return Send.successfulResponses(res, users);
+  } catch {
+    return Send.serverErrorResponses(res, { message: 'Failed to fetch users' });
   }
 });
 
@@ -23,32 +24,42 @@ router.delete(
     try {
       const userId = req.params.id;
 
-      if (!userId) {
-        res
-          .status(400)
-          .json({ status: 'Fail', message: 'User ID is required' });
-        return;
-      }
-
       const user = await findUserById(userId);
       if (user === null) {
-        res.status(404).json({
-          status: 'Fail',
+        return Send.clientErrorResponses(res, {
           message: `User with id ${userId} not found`,
+          statusCode: 404,
         });
-        return;
       }
 
       await deleteUserById(userId);
-      res
-        .status(200)
-        .json({ status: 'Success', message: 'User deleted successfully' });
-    } catch (error) {
-      res
-        .status(500)
-        .json({ error: 'Failed to delete user', prismaError: error });
+      return Send.successfulResponses(res, null, 204);
+    } catch {
+      return Send.serverErrorResponses(res, {
+        message: 'Failed to delete user',
+      });
     }
   }
 );
+
+router.get('/user/:id', async (req: Request<{ id: string }>, res: Response) => {
+  try {
+    const userId = req.params.id;
+
+    const user = await findUserById(userId);
+    if (user === null) {
+      return Send.clientErrorResponses(res, {
+        message: `User with id ${userId} not found`,
+        statusCode: 404,
+      });
+    }
+
+    return Send.successfulResponses(res, user);
+  } catch {
+    return Send.serverErrorResponses(res, {
+      message: 'Failed to fetch user',
+    });
+  }
+});
 
 export default router;

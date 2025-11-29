@@ -5,6 +5,7 @@ import express from 'express';
 import auth from '@api/auth';
 import users from '@api/users';
 import { PORT } from '@constants/index';
+import { Send } from '@utils/responses';
 
 const app = express();
 
@@ -18,7 +19,7 @@ app.use('/api/users', users);
 
 // Test route to see if express is working
 app.get('/test', (req, res) => {
-  res.status(200).json({ status: 'Express is working!!!' });
+  Send.successfulResponses(res, { status: 'Express is working!!!' });
 });
 
 app.listen(PORT, () => {

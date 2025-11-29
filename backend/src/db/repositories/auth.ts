@@ -67,11 +67,3 @@ export const findUserById = async (id: string): Promise<User | null> => {
 
   return user;
 };
-
-export class Auth {
-  constructor() {}
-
-  static async login(email: string, password: string) {
-    //
-  }
-}

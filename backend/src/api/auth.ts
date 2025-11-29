@@ -1,34 +1,38 @@
 import { Request, Response, Router } from 'express';
+import { z } from 'zod';
 
 import { findUserByEmail } from '@db/repositories/auth';
 import { createUser } from '@handlers/auth';
 import { UsersCreateInput } from '@prisma-models/Users';
 import { comparePassword } from '@utils/bcrypt';
 import { camelCaseKeys } from '@utils/camel-case-keys';
+import { Send } from '@utils/responses';
 import { generateAccessToken, generateRefreshToken } from '@utils/token';
+import { LoginSchema, RegisterSchema } from '@validations/auth';
 
 // Types
 export interface LoginPayload
   extends Pick<UsersCreateInput, 'email' | 'password'> {}
 
+type LoginBody = z.infer<typeof LoginSchema>;
+type RegisterBody = z.infer<typeof RegisterSchema>;
+
+// Router
 const router = Router();
 
 router.post(
   '/login',
-  async (req: Request<unknown, unknown, LoginPayload>, res: Response) => {
+  async (req: Request<unknown, unknown, LoginBody>, res: Response) => {
     try {
       const { email, password } = req.body;
-
-      if (!email || !password) {
-        res.status(400).json({ error: 'Email and password are required' });
-        return;
-      }
 
       const user = await findUserByEmail(email);
 
       if (user === null) {
-        res.status(404).json({ error: 'User not found' });
-        return;
+        return Send.clientErrorResponses(res, {
+          message: 'User not found',
+          statusCode: 404,
+        });
       }
 
       const isMatchingPasswords = await comparePassword(
@@ -37,26 +41,30 @@ router.post(
       );
 
       if (isMatchingPasswords === false) {
-        res.status(401).json({ error: 'Invalid credentials' });
-        return;
+        return Send.clientErrorResponses(res, {
+          message: 'Invalid credentials',
+          statusCode: 401,
+        });
       }
 
       const accessToken = generateAccessToken(user.id);
       const refreshToken = generateRefreshToken(user.id);
 
-      res.status(200).json({
+      Send.successfulResponses(res, {
         accessToken,
         refreshToken,
       });
-    } catch (error) {
-      res.status(500).json({ error: 'Login failed' });
+    } catch {
+      Send.serverErrorResponses(res, {
+        message: 'Login failed',
+      });
     }
   }
 );
 
 router.post(
-  '/user',
-  async (req: Request<unknown, unknown, UsersCreateInput>, res: Response) => {
+  '/register',
+  async (req: Request<unknown, unknown, RegisterBody>, res: Response) => {
     try {
       const payload = req.body;
       const userPayload = {
@@ -67,8 +75,10 @@ router.post(
       const { username, email, password } = userPayload;
 
       if (!username && !email && !password) {
-        res.status(400).json({ error: 'Missing required fields' });
-        return;
+        return Send.clientErrorResponses(res, {
+          message: 'Missing required fields',
+          statusCode: 400,
+        });
       }
 
       if (username === '') {
@@ -89,18 +99,18 @@ router.post(
       const checkExistingUser = await findUserByEmail(email);
 
       if (checkExistingUser !== null) {
-        res.status(409).json({
-          status: 'fail',
+        Send.clientErrorResponses(res, {
           message: 'This email is already registered',
+          statusCode: 409,
         });
         return;
       }
 
       const user = await createUser(userPayload);
       const camelCasedUser = camelCaseKeys(user);
-      res.status(201).json({ user: camelCasedUser });
-    } catch (error) {
-      res.status(500).json({ error: 'Registration failed' });
+      Send.successfulResponses(res, camelCasedUser, 201);
+    } catch {
+      Send.serverErrorResponses(res, { message: 'Registration failed' });
     }
   }
 );
