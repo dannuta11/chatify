@@ -51,17 +51,9 @@ export class Auth {
     }
   }
 
-  static async register(
-    req: Request<unknown, unknown, RegisterBody>,
-    res: Response
-  ) {
+  static async register(req: Request<{}, {}, RegisterBody>, res: Response) {
     try {
       const { username, email, password } = req.body;
-
-      if (!username || !email || !password) {
-        Send.badRequestResponse(res, 'Missing required fields');
-        return;
-      }
 
       const checkExistingUser = await UserRepository.findUserByEmail(email);
 
