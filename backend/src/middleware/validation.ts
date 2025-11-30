@@ -2,15 +2,11 @@ import { NextFunction, Request, Response } from 'express';
 import z from 'zod';
 
 import { Send } from '@utils/responses';
-import { LoginSchema } from '@validations/auth';
-
-// Types
-type LoginBody = z.infer<typeof LoginSchema>;
 
 export class Validation {
-  static validateBody(schema: z.ZodTypeAny) {
+  static validateBody(schema: z.ZodObject) {
     return (
-      req: Request<{}, {}, LoginBody>,
+      req: Request<{}, {}, z.infer<typeof schema>>,
       res: Response,
       next: NextFunction
     ) => {
@@ -22,7 +18,7 @@ export class Validation {
           const formattedErrors: Record<string, string[]> = {};
 
           error.issues.forEach(({ path, message }) => {
-            const key = path.join('');
+            const key = path.join('.');
 
             if (!formattedErrors[key]) {
               formattedErrors[key] = [];
