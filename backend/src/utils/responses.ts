@@ -33,7 +33,7 @@ export class Send {
     });
   }
 
-  static validationErrorResponses<T>(res: Response, formattedErrors: T) {
+  static validationErrorResponse<T>(res: Response, formattedErrors: T) {
     return res.status(422).json({
       status: 'error',
       errors: formattedErrors,

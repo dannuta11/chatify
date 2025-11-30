@@ -4,7 +4,7 @@ import z from 'zod';
 import { Send } from '@utils/responses';
 
 export class Validation {
-  static validateBody(schema: z.ZodObject) {
+  static validateBody(schema: z.ZodSchema) {
     return (
       req: Request<{}, {}, z.infer<typeof schema>>,
       res: Response,
@@ -27,7 +27,7 @@ export class Validation {
             formattedErrors[key].push(message);
           });
 
-          Send.validationErrorResponses(res, formattedErrors);
+          Send.validationErrorResponse(res, formattedErrors);
 
           return;
         }
