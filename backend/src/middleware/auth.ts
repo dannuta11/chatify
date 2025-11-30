@@ -13,13 +13,15 @@ export default class AuthMiddleware {
     const authorizationHeader = req.headers.authorization;
 
     if (!authorizationHeader) {
-      return Send.unauthorizedResponse(res, 'Authorization header missing');
+      Send.unauthorizedResponse(res, 'Authorization header missing');
+      return;
     }
 
     try {
       verifyToken<DecodedToken>(authorizationHeader);
     } catch {
       Send.unauthorizedResponse(res, 'Invalid or expired token');
+      return;
     }
 
     next();
