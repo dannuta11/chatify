@@ -25,11 +25,7 @@ export class Auth {
       const user = await UserRepository.findUserByEmail(email);
 
       if (user === null) {
-        Send.clientErrorResponses(res, {
-          message: 'User not found',
-          statusCode: 404,
-        });
-
+        Send.notFoundResponse(res, 'User not found');
         return;
       }
 
@@ -39,52 +35,30 @@ export class Auth {
       );
 
       if (isMatchingPasswords === false) {
-        Send.clientErrorResponses(res, {
-          message: 'Invalid credentials',
-          statusCode: 401,
-        });
-
+        Send.unauthorizedResponse(res, 'Invalid credentials');
         return;
       }
 
       const accessToken = generateAccessToken(user.id);
       const refreshToken = generateRefreshToken(user.id);
 
-      Send.successfulResponses(res, {
+      Send.okResponse(res, {
         accessToken,
         refreshToken,
       });
     } catch {
-      Send.serverErrorResponses(res, {
-        message: 'Login failed',
-      });
+      Send.internalServerErrorResponse(res, 'Login failed');
     }
   }
 
-  static async register(
-    req: Request<unknown, unknown, RegisterBody>,
-    res: Response
-  ) {
+  static async register(req: Request<{}, {}, RegisterBody>, res: Response) {
     try {
       const { username, email, password } = req.body;
-
-      if (!username || !email || !password) {
-        Send.clientErrorResponses(res, {
-          message: 'Missing required fields',
-          statusCode: 400,
-        });
-
-        return;
-      }
 
       const checkExistingUser = await UserRepository.findUserByEmail(email);
 
       if (checkExistingUser !== null) {
-        Send.clientErrorResponses(res, {
-          message: 'This email is already registered',
-          statusCode: 409,
-        });
-
+        Send.conflictResponse(res, 'This email is already registered');
         return;
       }
 
@@ -94,10 +68,11 @@ export class Auth {
         email,
         password: hashedPassword,
       });
+
       const camelCasedUser = camelCaseKeys(user);
-      Send.successfulResponses(res, camelCasedUser, 201);
+      Send.createdResponse(res, camelCasedUser);
     } catch {
-      Send.serverErrorResponses(res, { message: 'Registration failed' });
+      Send.internalServerErrorResponse(res, 'Registration failed');
     }
   }
 }

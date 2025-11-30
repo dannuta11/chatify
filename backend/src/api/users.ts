@@ -7,11 +7,9 @@ export default class User {
   static async getUserList(_: Request, res: Response) {
     try {
       const users = await UserRepository.getUserList();
-      Send.successfulResponses(res, users);
+      Send.okResponse(res, users);
     } catch {
-      Send.serverErrorResponses(res, {
-        message: 'Failed to fetch users',
-      });
+      Send.internalServerErrorResponse(res, 'Failed to fetch users');
     }
   }
 
@@ -22,19 +20,13 @@ export default class User {
       const user = await UserRepository.findUserById(userId);
 
       if (user === null) {
-        Send.clientErrorResponses(res, {
-          message: `User with id ${userId} not found`,
-          statusCode: 404,
-        });
-
+        Send.notFoundResponse(res, `User with id ${userId} not found`);
         return;
       }
 
-      Send.successfulResponses(res, user);
+      Send.okResponse(res, user);
     } catch {
-      Send.serverErrorResponses(res, {
-        message: 'Failed to fetch user',
-      });
+      Send.internalServerErrorResponse(res, 'Failed to fetch user');
     }
   }
 
@@ -44,20 +36,14 @@ export default class User {
 
       const user = await UserRepository.findUserById(userId);
       if (user === null) {
-        Send.clientErrorResponses(res, {
-          message: `User with id ${userId} not found`,
-          statusCode: 404,
-        });
-
+        Send.notFoundResponse(res, `User with id ${userId} not found`);
         return;
       }
 
       await UserRepository.deleteUserById(userId);
-      Send.successfulResponses(res, null, 204);
+      Send.noContentResponse(res);
     } catch {
-      Send.serverErrorResponses(res, {
-        message: 'Failed to delete user',
-      });
+      Send.internalServerErrorResponse(res, 'Failed to delete user');
     }
   }
 }
