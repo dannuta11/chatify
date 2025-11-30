@@ -7,6 +7,8 @@ import { authRouters } from '@routes/auth';
 import { userRouters } from '@routes/users';
 import { Send } from '@utils/responses';
 
+import { swaggerUiSetup, swaggerUiServe } from './swagger';
+
 export default class App {
   private app: Express;
 
@@ -25,6 +27,8 @@ export default class App {
   private initRoutes(): void {
     this.app.use('/api/auth', authRouters);
     this.app.use('/api/users', userRouters);
+    // Add swagger routes
+    this.app.use('/api/docs', swaggerUiServe, swaggerUiSetup);
 
     // Test route to see if express is working
     this.app.get('/test', (req, res) => {
