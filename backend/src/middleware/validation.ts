@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import z from 'zod';
 
+import { formattedZodErrors } from '@utils/formatted-zod-errors';
 import { Send } from '@utils/responses';
 
 export class Validation {
@@ -12,23 +13,9 @@ export class Validation {
     ) => {
       try {
         schema.parse(req.body);
-        next();
       } catch (error) {
         if (error instanceof z.ZodError) {
-          const formattedErrors: Record<string, string[]> = {};
-
-          error.issues.forEach(({ path, message }) => {
-            const key = path.join('.');
-
-            if (!formattedErrors[key]) {
-              formattedErrors[key] = [];
-            }
-
-            formattedErrors[key].push(message);
-          });
-
-          Send.validationErrorResponse(res, formattedErrors);
-
+          Send.validationErrorResponse(res, formattedZodErrors(error));
           return;
         }
 
@@ -36,7 +23,10 @@ export class Validation {
           message: 'Invalid request body',
           statusCode: 400,
         });
+        return;
       }
+
+      next();
     };
   }
 }
