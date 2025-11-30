@@ -28,7 +28,7 @@ export default class App {
 
     // Test route to see if express is working
     this.app.get('/test', (req, res) => {
-      Send.successfulResponses(res, { status: 'Express is working!!!' });
+      Send.okResponse(res, 'Express is working!!!');
     });
   }
 

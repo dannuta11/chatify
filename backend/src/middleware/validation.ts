@@ -19,10 +19,7 @@ export class Validation {
           return;
         }
 
-        Send.clientErrorResponses(res, {
-          message: 'Invalid request body',
-          statusCode: 400,
-        });
+        Send.badRequestResponse(res, 'Invalid request body');
         return;
       }
 
