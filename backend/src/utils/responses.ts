@@ -39,4 +39,11 @@ export class Send {
       errors: formattedErrors,
     });
   }
+
+  static unauthorizedResponse(res: Response, message = 'Unauthorized access') {
+    return res.status(401).json({
+      status: 'error',
+      message,
+    });
+  }
 }

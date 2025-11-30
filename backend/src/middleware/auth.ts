@@ -4,28 +4,22 @@ import { Send } from '@utils/responses';
 import { verifyToken } from '@utils/token';
 
 // Types
-interface DecodedToken {
+type DecodedToken = {
   userId: string;
-}
+};
 
 export default class AuthMiddleware {
   static authenticateUser(req: Request, res: Response, next: NextFunction) {
     const authorizationHeader = req.headers.authorization;
 
     if (!authorizationHeader) {
-      return Send.clientErrorResponses(res, {
-        message: 'Authorization header missing',
-        statusCode: 401,
-      });
+      return Send.unauthorizedResponse(res, 'Authorization header missing');
     }
 
     try {
       verifyToken<DecodedToken>(authorizationHeader);
     } catch {
-      Send.clientErrorResponses(res, {
-        message: 'Invalid or expired token',
-        statusCode: 401,
-      });
+      Send.unauthorizedResponse(res, 'Invalid or expired token');
     }
 
     next();

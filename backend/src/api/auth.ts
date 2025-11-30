@@ -39,10 +39,7 @@ export class Auth {
       );
 
       if (isMatchingPasswords === false) {
-        Send.clientErrorResponses(res, {
-          message: 'Invalid credentials',
-          statusCode: 401,
-        });
+        Send.unauthorizedResponse(res, 'Invalid credentials');
 
         return;
       }
