@@ -13,7 +13,7 @@
     "dev": "nodemon",
     "lint:fix": "eslint . --fix",
     "lint": "eslint ./src --ext .ts,.js --ignore-pattern 'src/generated/*'",
-    "start": "node ./dist/server.js"
+    "start": "node ./dist/index.js"
   },
   "keywords": [],
   "author": "",
