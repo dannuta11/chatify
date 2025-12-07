@@ -12,7 +12,7 @@
     "build": "tsc && tsc-alias",
     "dev": "nodemon",
     "lint:fix": "eslint . --fix",
-    "lint": "eslint 'src/**/*.{ts,js}'",
+    "lint": "eslint ./src --ext .ts,.js --ignore-pattern 'src/generated/*'",
     "start": "node ./dist/server.js"
   },
   "keywords": [],
