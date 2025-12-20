@@ -1,10 +1,9 @@
 import type { FormProps } from "antd";
-import { Button, Checkbox, Flex, Form, Input } from "antd";
+import { Button, Flex, Form, Input } from "antd";
 
 type FieldType = {
   email?: string;
   password?: string;
-  remember?: string;
 };
 
 const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
@@ -13,17 +12,10 @@ const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
 
 export const Login = () => {
   return (
-    <Flex
-      vertical
-      justify="center"
-      align="center"
-      style={{ minHeight: "100vh" }}
-    >
+    <Flex vertical justify="center" align="center" className="min-h-screen">
       <Form
-        name="basic"
         layout="vertical"
         labelCol={{ span: 8 }}
-        initialValues={{ remember: true }}
         onFinish={onFinish}
         autoComplete="off"
       >
@@ -47,10 +39,6 @@ export const Login = () => {
           rules={[{ required: true, message: "Please input your password!" }]}
         >
           <Input.Password />
-        </Form.Item>
-
-        <Form.Item<FieldType> name="remember" valuePropName="checked">
-          <Checkbox>Remember me</Checkbox>
         </Form.Item>
 
         <Form.Item>
