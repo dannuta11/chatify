@@ -9,7 +9,7 @@
     "skipLibCheck": true,
 
     /* Bundler mode */
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
@@ -31,7 +31,8 @@
       "@utils/*": ["./src/utils/*"],
       "@api/*": ["./src/api/*"],
       "@routes/*": ["./src/routes/*"],
-      "@constants": ["./src/constants"]
+      "@constants": ["./src/constants"],
+      "@features/*": ["./src/features/*"]
     }
   },
   "include": ["src"]

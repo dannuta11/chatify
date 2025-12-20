@@ -14,6 +14,7 @@ export default defineConfig({
       "@api": path.resolve(__dirname, "./src/api"),
       "@routes": path.resolve(__dirname, "./src/routes"),
       "@constants": path.resolve(__dirname, "./src/constants"),
+      "@features": path.resolve(__dirname, "./src/features"),
     },
   },
 });
