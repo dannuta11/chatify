@@ -1,16 +1,19 @@
 import type { FormProps } from "antd";
 import { Button, Flex, Form, Input } from "antd";
 
-type FieldType = {
-  email?: string;
-  password?: string;
-};
+import type { LoginBody } from "@types/index";
+import { useLogin } from "@network/index";
 
-const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
-  console.log("Success:", values);
-};
+type FieldType = LoginBody;
 
 export const Login = () => {
+  const { isPending, login } = useLogin();
+
+  const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
+    console.log("Success:", values);
+    await login(values);
+  };
+
   return (
     <Flex vertical justify="center" align="center" className="min-h-screen">
       <Form
@@ -42,7 +45,7 @@ export const Login = () => {
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={isPending}>
             Login
           </Button>
         </Form.Item>
