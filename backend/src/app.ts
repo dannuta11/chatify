@@ -1,5 +1,6 @@
 import path from 'path';
 
+import cors from 'cors';
 import express, { Express } from 'express';
 
 import { PORT } from '@constants/index';
@@ -19,6 +20,7 @@ export default class App {
 
   private initMiddleware(): void {
     this.app.use(express.json());
+    this.app.use(cors());
     this.app.use(express.static(path.join(__dirname, '../frontend', 'dist')));
   }
 

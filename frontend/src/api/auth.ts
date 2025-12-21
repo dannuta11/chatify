@@ -2,8 +2,8 @@ import type { LoginBody } from "@types/index";
 import { HOST } from "@constants";
 
 export const auth = {
-  async login(body: LoginBody): Promise<LoginBody> {
-    const loginResponse = await fetch(`${HOST}/api/login`, {
+  async login(body: LoginBody): Promise<Response> {
+    const loginResponse = await fetch(`${HOST}/api/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -11,6 +11,6 @@ export const auth = {
       body: JSON.stringify(body),
     });
 
-    return loginResponse;
+    return loginResponse as Response;
   },
 };
