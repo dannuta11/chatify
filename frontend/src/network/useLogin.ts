@@ -11,6 +11,14 @@ const loginFn = ({ email, password }: LoginBody) => {
 export const useLogin = () => {
   const { mutateAsync: login, isPending } = useMutation({
     mutationFn: loginFn,
+    onError: (error) => {
+      console.log("🚀 ~ useLogin ~ error:", error);
+      alert(
+        `Login failed: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`
+      );
+    },
   });
 
   return { login, isPending };

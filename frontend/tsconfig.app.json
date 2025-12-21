@@ -35,7 +35,8 @@
       "@features": ["./src/features/index.ts"],
       "@network": ["./src/network/index.ts"],
       "@types": ["./src/types/index.ts"],
-      "@miscellaneous": ["./src/miscellaneous/index.ts"]
+      "@miscellaneous": ["./src/miscellaneous/index.ts"],
+      "@css/*": ["./src/css/*"]
     },
     "typeRoots": ["./node_modules/@types", "./src/types"]
   },
