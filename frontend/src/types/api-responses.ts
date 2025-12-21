@@ -4,11 +4,3 @@ export type ApiResponsesError =
       message: string;
     }
   | { status: "error"; errors: Record<string, string>[] };
-
-export type ApiResponses<T, E = ApiResponsesError> =
-  | {
-      data: T;
-    }
-  | {
-      error: E;
-    };

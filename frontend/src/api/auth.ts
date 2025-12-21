@@ -1,7 +1,6 @@
 import type { LoginBody, ApiResponsesError } from "@types";
-import { HOST } from "@constants";
+import { HOST, NETWORK_STATUS_CODES } from "@constants";
 import { dalRequest } from "@dal";
-import { NETWORK_STATUS_CODES } from "@constants";
 
 export const auth = {
   async login(body: LoginBody): Promise<LoginBody> {
