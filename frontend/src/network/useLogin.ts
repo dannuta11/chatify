@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { api } from "@api";
 import type { LoginBody } from "@types";
 
-// Helpers
+// Helper functions
 const loginFn = ({ email, password }: LoginBody) => {
   return api.auth.login({ email, password });
 };
