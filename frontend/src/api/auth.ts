@@ -1,5 +1,7 @@
-import type { LoginBody } from "@types";
+import type { LoginBody, ApiResponsesError } from "@types";
 import { HOST } from "@constants";
+import { dalRequest } from "@dal";
+import { NETWORK_STATUS_CODES } from "@constants";
 
 export const auth = {
   async login(body: LoginBody): Promise<LoginBody> {
@@ -11,12 +13,11 @@ export const auth = {
       body: JSON.stringify(body),
     });
 
-    const data = (await response.json()) as LoginBody | undefined;
+    const data = await dalRequest<LoginBody, ApiResponsesError>(
+      response,
+      NETWORK_STATUS_CODES.CREATED
+    );
 
-    if (response.status !== 201) {
-      throw new Error(data as unknown as string);
-    }
-
-    return data as LoginBody;
+    return data;
   },
 };

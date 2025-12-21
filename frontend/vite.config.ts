@@ -19,6 +19,7 @@ export default defineConfig({
       "@types": path.resolve(__dirname, "./src/types"),
       "@miscellaneous": path.resolve(__dirname, "./src/miscellaneous"),
       "@css": path.resolve(__dirname, "./src/css"),
+      "@dal": path.resolve(__dirname, "./src/dal"),
     },
   },
 });

@@ -36,7 +36,8 @@
       "@network": ["./src/network/index.ts"],
       "@types": ["./src/types/index.ts"],
       "@miscellaneous": ["./src/miscellaneous/index.ts"],
-      "@css/*": ["./src/css/*"]
+      "@css/*": ["./src/css/*"],
+      "@dal": ["./src/dal/index.ts"]
     },
     "typeRoots": ["./node_modules/@types", "./src/types"]
   },

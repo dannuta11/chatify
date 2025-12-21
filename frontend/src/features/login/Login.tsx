@@ -1,17 +1,26 @@
 import type { FormProps } from "antd";
-import { Button, Flex, Form, Input } from "antd";
+import { Button, Flex, Form, Input, notification } from "antd";
+import { useNavigate } from "react-router-dom";
 
 import type { LoginBody } from "@types";
 import { useLogin } from "@network";
+import { ROUTES } from "@routes";
 
 type FieldType = LoginBody;
 
 export const Login = () => {
+  const navigate = useNavigate();
   const { isPending, login } = useLogin();
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
-    console.log("Success:", values);
     await login(values);
+    notification.success({
+      title: "Login Successful",
+      description: "You have been logged in successfully.",
+    });
+    setTimeout(() => {
+      navigate(ROUTES.HOME);
+    }, 1000);
   };
 
   return (
