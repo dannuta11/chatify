@@ -14,6 +14,12 @@ export default defineConfig({
       "@api": path.resolve(__dirname, "./src/api"),
       "@routes": path.resolve(__dirname, "./src/routes"),
       "@constants": path.resolve(__dirname, "./src/constants"),
+      "@features": path.resolve(__dirname, "./src/features"),
+      "@network": path.resolve(__dirname, "./src/network"),
+      "@types": path.resolve(__dirname, "./src/types"),
+      "@miscellaneous": path.resolve(__dirname, "./src/miscellaneous"),
+      "@css": path.resolve(__dirname, "./src/css"),
+      "@dal": path.resolve(__dirname, "./src/dal"),
     },
   },
 });

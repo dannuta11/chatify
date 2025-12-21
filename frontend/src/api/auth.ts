@@ -1,0 +1,23 @@
+import type { LoginBody, ApiResponsesError } from "@types";
+import { HOST, NETWORK_STATUS_CODES } from "@constants";
+import { dalRequest } from "@dal";
+
+export const auth = {
+  // TODO: Check and define the correct return type
+  async login(body: LoginBody): Promise<unknown> {
+    const response = await fetch(`${HOST}/api/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    const data = await dalRequest<LoginBody, ApiResponsesError>(
+      response,
+      NETWORK_STATUS_CODES.CREATED
+    );
+
+    return data;
+  },
+};

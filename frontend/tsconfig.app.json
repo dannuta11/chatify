@@ -9,7 +9,7 @@
     "skipLibCheck": true,
 
     /* Bundler mode */
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
@@ -25,14 +25,21 @@
     "noUncheckedSideEffectImports": true,
     "baseUrl": "./",
     "paths": {
-      "@components/*": ["./src/components/*"],
-      "@assets/*": ["./src/assets/*"],
-      "@hooks/*": ["./src/hooks/*"],
-      "@utils/*": ["./src/utils/*"],
-      "@api/*": ["./src/api/*"],
-      "@routes/*": ["./src/routes/*"],
-      "@constants": ["./src/constants"]
-    }
+      "@components": ["./src/components/index.ts"],
+      "@assets": ["./src/assets/index.ts"],
+      "@hooks": ["./src/hooks/index.ts"],
+      "@utils": ["./src/utils/index.ts"],
+      "@api": ["./src/api/index.ts"],
+      "@routes": ["./src/routes/index.ts"],
+      "@constants": ["./src/constants"],
+      "@features": ["./src/features/index.ts"],
+      "@network": ["./src/network/index.ts"],
+      "@types": ["./src/types/index.ts"],
+      "@miscellaneous": ["./src/miscellaneous/index.ts"],
+      "@css/*": ["./src/css/*"],
+      "@dal": ["./src/dal/index.ts"]
+    },
+    "typeRoots": ["./node_modules/@types", "./src/types"]
   },
   "include": ["src"]
 }
