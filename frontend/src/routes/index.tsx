@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 
-import { Login } from "@features/index";
-import { RootComponent } from "../RootComponent";
+import { Login } from "@features";
+import { RootComponent } from "@miscellaneous";
 
 export const router = createBrowserRouter([
   {

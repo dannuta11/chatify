@@ -17,6 +17,7 @@ export default defineConfig({
       "@features": path.resolve(__dirname, "./src/features"),
       "@network": path.resolve(__dirname, "./src/network"),
       "@types": path.resolve(__dirname, "./src/types"),
+      "@miscellaneous": path.resolve(__dirname, "./src/miscellaneous"),
     },
   },
 });

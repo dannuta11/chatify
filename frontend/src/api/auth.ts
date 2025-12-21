@@ -1,4 +1,4 @@
-import type { LoginBody } from "@types/index";
+import type { LoginBody } from "@types";
 import { HOST } from "@constants";
 
 export const auth = {

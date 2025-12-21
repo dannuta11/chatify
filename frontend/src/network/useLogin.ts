@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 
-import { api } from "@api/index";
-import type { LoginBody } from "@types/index";
+import { api } from "@api";
+import type { LoginBody } from "@types";
 
 // Helpers
 const loginFn = ({ email, password }: LoginBody) => {

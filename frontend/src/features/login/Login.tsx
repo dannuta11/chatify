@@ -1,8 +1,8 @@
 import type { FormProps } from "antd";
 import { Button, Flex, Form, Input } from "antd";
 
-import type { LoginBody } from "@types/index";
-import { useLogin } from "@network/index";
+import type { LoginBody } from "@types";
+import { useLogin } from "@network";
 
 type FieldType = LoginBody;
 
