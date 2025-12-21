@@ -43,7 +43,7 @@ export const Login = () => {
 
         <Form.Item>
           <Button type="primary" htmlType="submit">
-            Submit
+            Login
           </Button>
         </Form.Item>
       </Form>

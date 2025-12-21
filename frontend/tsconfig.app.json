@@ -32,7 +32,9 @@
       "@api/*": ["./src/api/*"],
       "@routes/*": ["./src/routes/*"],
       "@constants": ["./src/constants"],
-      "@features/*": ["./src/features/*"]
+      "@features/*": ["./src/features/*"],
+      "@network/*": ["./src/network/*"],
+      "@types/*": ["./src/types/*"]
     }
   },
   "include": ["src"]
